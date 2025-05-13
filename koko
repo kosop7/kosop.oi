@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>패치 노트: 민족 - 조선족 에디션</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'NeoDunggeunmo';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.3/NeoDunggeunmo.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        body {
+            font-family: 'NeoDunggeunmo', 'Press Start 2P', monospace;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .pixel-art {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .screen {
+            display: none;
+            min-height: 100vh;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .active-screen {
+            display: block;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 3px 3px 0 #333;
+            animation: blink 1s infinite;
+        }
+        
+        .menu-item {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            cursor: pointer;
+            padding: 10px;
+            transition: all 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: scale(1.05);
+            color: #ffcc00;
+        }
+        
+        .version-item {
+            font-size: 1.3rem;
+            margin: 1rem 0;
+            padding: 10px;
+            border: 2px solid #555;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .version-item:hover {
+            border-color: #ffcc00;
+            color: #ffcc00;
+        }
+        
+        .locked {
+            color: #555;
+            cursor: not-allowed;
+        }
+        
+        .locked:hover {
+            border-color: #555;
+            color: #555;
+        }
+        
+        .patch-note {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border: 2px solid #555;
+            margin-bottom: 20px;
+        }
+        
+        .patch-note-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            text-shadow: 2px 2px 0 #333;
+        }
+        
+        .patch-section {
+            margin: 1rem 0;
+        }
+        
+        .patch-section-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #ffcc00;
+        }
+        
+        .feature-item {
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .feature-icon {
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: 2px solid #555;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            border-color: #ffcc00;
+            color: #ffcc00;
+        }
+        
+        .pixel-art-container {
+            width: 100%;
+            height: 200px;
+            background-color: #111;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #555;
+            overflow: hidden;
+        }
+        
+        .pixel-character {
+            width: 32px;
+            height: 48px;
+            background-color: #f5f5f5;
+            position: relative;
+        }
+        
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-5px, 5px); }
+            40% { transform: translate(5px, -5px); }
+            60% { transform: translate(-5px, -5px); }
+            80% { transform: translate(5px, 5px); }
+            100% { transform: translate(0); }
+        }
+        
+        .press-start {
+            animation: blink 1s infinite;
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 1.2rem;
+        }
+        
+        .bg-v1 { background-color: #543d2c; }
+        .bg-v2 { background-color: #282828; }
+        .bg-v3 { background-color: #8b0000; }
+        .bg-v4 { background-color: #004080; }
+        .bg-v5 { background-color: #2c3e50; }
+        .bg-secret { 
+            background-color: #210035; 
+            animation: glitch 0.5s infinite;
+        }
+        
+        .text-v1 { color: #c8b083; }
+        .text-v2 { color: #d0d0d0; }
+        .text-v3 { color: #ff6b6b; }
+        .text-v4 { color: #6bc5ff; }
+        .text-v5 { color: #c0f7ff; }
+        .text-secret { 
+            color: #ff00ff; 
+            text-shadow: 3px 3px 0 #00ffff;
+        }
+        
+        .pixelated-map {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #333;
+            margin: 5px 0;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #6bc5ff;
+            transition: width 1s;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 0;
+            right: 5px;
+            font-size: 0.8rem;
+            line-height: 20px;
+            color: white;
+        }
+        
+        .pixel-visualization {
+            width: 100%;
+            height: 150px;
+            background-color: #111;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pixel-house {
+            width: 50px;
+            height: 40px;
+            background-color: #8B4513;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .pixel-house:before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 20px solid #A52A2A;
+        }
+        
+        .pixel-character {
+            width: 15px;
+            height: 30px;
+            background-color: #FFE4B5;
+            position: absolute;
+            bottom: 10px;
+        }
+        
+        .farm-crop {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            bottom: 10px;
+        }
+        
+        .farm-crop.rice {
+            background-color: #90EE90;
+            left: 100px;
+        }
+        
+        .farm-crop.bean {
+            background-color: #556B2F;
+            left: 150px;
+        }
+        
+        .farm-crop.corn {
+            background-color: #FFD700;
+            left: 200px;
+        }
+        
+        .language-icon {
+            padding: 5px;
+            margin: 5px;
+            display: inline-block;
+        }
+        
+        .korean {
+            background-color: #4169E1;
+        }
+        
+        .japanese {
+            background-color: #DC143C;
+        }
+        
+        .chinese {
+            background-color: #FF4500;
+        }
+        
+        .english {
+            background-color: #32CD32;
+        }
+        
+        .resistance-group {
+            width: 120px;
+            height: 40px;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .resistance-person {
+            width: 10px;
+            height: 20px;
+            background-color: #000;
+        }
+        
+        .modern-city {
+            width: 100%;
+            height: 100px;
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+        }
+        
+        .building {
+            width: 30px;
+            background-color: #808080;
+            margin: 0 5px;
+        }
+        
+        .building-1 { height: 80px; }
+        .building-2 { height: 60px; }
+        .building-3 { height: 90px; }
+        .building-4 { height: 70px; }
+        .building-5 { height: 50px; }
+        
+        .digital-device {
+            width: 20px;
+            height: 30px;
+            background-color: #000;
+            border: 2px solid #4682B4;
+            position: absolute;
+            bottom: 10px;
+        }
+        
+        .phone-1 { left: 100px; }
+        .phone-2 { left: 150px; }
+        .phone-3 { left: 200px; }
+        .computer { 
+            width: 40px;
+            height: 30px;
+            left: 300px;
+            border-color: #32CD32;
+        }
+        
+        .glitch-text {
+            animation: glitch 0.3s infinite;
+            color: #ff00ff;
+            text-shadow: 3px 3px 0 #00ffff;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffcc00;
+        }
+        
+        /* Custom 8-bit button */
+        .pixel-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-family: 'Press Start 2P', monospace;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            background-color: #333;
+            border: none;
+            border-bottom: 6px solid #111;
+            border-right: 6px solid #111;
+            border-left: 6px solid #555;
+            border-top: 6px solid #555;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        
+        .pixel-button:active {
+            border-bottom: 6px solid #555;
+            border-right: 6px solid #555;
+            border-left: 6px solid #111;
+            border-top: 6px solid #111;
+        }
+    </style>
+</head>
+<body>
+    <!-- 인트로/메인 화면 -->
+    <div id="main-screen" class="screen active-screen">
+        <div class="container flex flex-col items-center justify-center h-screen">
+            <h1 class="title">패치 노트: 민족</h1>
+            <h2 class="text-xl mb-8">[조선족 에디션]</h2>
+            <div class="menu-item" onclick="showScreen('version-select-screen')">▶ 시작하기</div>
+            <div class="menu-item" onclick="showScreen('settings-screen')">⚙ 설정</div>
+            <div class="menu-item" onclick="showScreen('info-screen')">ℹ 정보</div>
+            <div class="press-start">PRESS START</div>
+        </div>
+    </div>
+
+    <!-- 버전 선택 화면 -->
+    <div id="version-select-screen" class="screen">
+        <div class="container">
+            <h1 class="text-2xl mb-6 text-center">버전 선택</h1>
+            <div class="version-item bg-v1" onclick="showVersion('v1')">
+                > v1.0 개척기 (1900년대 초반)
+            </div>
+            <div class="version-item bg-v2" onclick="showVersion('v2')">
+                > v2.0 일제강점기 (1930년대)
+            </div>
+            <div class="version-item bg-v3" onclick="showVersion('v3')">
+                > v3.0 문화대혁명 (1966-1976)
+            </div>
+            <div class="version-item bg-v4" onclick="showVersion('v4')">
+                > v4.0 개혁개방 (1980년대)
+            </div>
+            <div class="version-item bg-v5" onclick="showVersion('v5')">
+                > v5.0 현대 (2000년대~현재)
+            </div>
+            <div id="secret-version" class="version-item bg-black locked">
+                [???] - 잠금 해제 필요
+            </div>
+            <div class="back-button" onclick="showScreen('main-screen')">← 뒤로 가기</div>
+        </div>
+    </div>
+
+    <!-- v1.0 개척기 화면 -->
+    <div id="v1-screen" class="screen bg-v1">
+        <div class="container">
+            <div class="patch-note">
+                <h1 class="patch-note-title text-v1">패치 노트 v1.0: 개척기</h1>
+                
+                <div class="pixel-visualization">
+                    <div class="pixel-house"></div>
+                    <div class="pixel-character" style="left: 30px;"></div>
+                    <div class="pixel-character" style="left: 60px;"></div>
+                    <div class="farm-crop rice"></div>
+                    <div class="farm-crop bean"></div>
+                    <div class="farm-crop corn"></div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">새로 추가된 기능:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>이주 및 정착 시스템: 만주 지역 정착 가능</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>농업 기술 +80%: 새로운 농작물 재배법 습득</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%;"></div>
+                        <div class="progress-text">+80%</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>문화 융합: 중국 현지 문화와의 초기 상호작용</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>'간도 개척자' 칭호 획득 가능</span>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">삭제된 콘텐츠:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>한반도 거주지: 고향으로의 접근 제한</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>전통적 생활 방식: 일부 관습 변경 필요</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>조선 국적: 법적 지위 불안정</span>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">알려진 버그:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>정체성 혼란: 새로운 환경 적응 중 발생하는 문제</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>생존 불안정: 초기 정착 과정의 어려움</span>
+                    </div>
+                </div>
+            </div>
+            <div class="back-button" onclick="showScreen('version-select-screen')">← 버전 선택으로 돌아가기</div>
+        </div>
+    </div>
+
+    <!-- v2.0 일제강점기 화면 -->
+    <div id="v2-screen" class="screen bg-v2">
+        <div class="container">
+            <div class="patch-note">
+                <h1 class="patch-note-title text-v2">패치 노트 v2.0: 일제강점기</h1>
+                
+                <div class="pixel-visualization" style="background-color: #1a1a1a;">
+                    <div class="language-icon korean">한</div>
+                    <div class="language-icon japanese">日</div>
+                    <div class="resistance-group">
+                        <div class="resistance-person"></div>
+                        <div class="resistance-person"></div>
+                        <div class="resistance-person"></div>
+                        <div class="resistance-person"></div>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">새로 추가된 기능:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>일본어 학습: 언어 능력 다양화 +20%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 20%; background-color: #d0d0d0;"></div>
+                        <div class="progress-text">+20%</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>저항 운동: 비밀 독립운동 네트워크 활성화</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>이중 정체성: 생존을 위한 적응 전략 개발</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>문화 보존 노력: 비밀 민족 교육 시스템</span>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">삭제된 콘텐츠:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>자유로운 이동: 강제 이주 및 이동 제한</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>민족 문화 표현: 공개적 전통 행사 제한 -40%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 40%; background-color: #d0d0d0;"></div>
+                        <div class="progress-text">-40%</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>한글 사용: 공공장소에서의 사용 감소 -30%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 30%; background-color: #d0d0d0;"></div>
+                        <div class="progress-text">-30%</div>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">알려진 버그:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>강제 징용: 예상치 못한 인구 감소 발생</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>정체성 갈등: 생존과 저항 사이의 딜레마</span>
+                    </div>
+                </div>
+            </div>
+            <div class="back-button" onclick="showScreen('version-select-screen')">← 버전 선택으로 돌아가기</div>
+        </div>
+    </div>
+
+    <!-- v3.0 문화대혁명 화면 -->
+    <div id="v3-screen" class="screen bg-v3">
+        <div class="container">
+            <div class="patch-note">
+                <h1 class="patch-note-title text-v3">패치 노트 v3.0: 문화대혁명</h1>
+                
+                <div class="pixel-visualization" style="background-color: #5a0000;">
+                    <div class="language-icon korean" style="opacity: 0.3;">한</div>
+                    <div class="language-icon chinese" style="font-size: 1.5em;">中</div>
+                    <div class="resistance-group">
+                        <div class="resistance-person" style="height: 25px;"></div>
+                        <div class="resistance-person" style="height: 25px;"></div>
+                        <div class="resistance-person" style="height: 25px;"></div>
+                        <div class="resistance-person" style="height: 25px;"></div>
+                        <div class="resistance-person" style="height: 25px;"></div>
+                        <div class="resistance-person" style="height: 25px;"></div>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">새로 추가된 기능:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>중국어 능력 +50%: 공식 언어 사용 증가</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 50%; background-color: #ff6b6b;"></div>
+                        <div class="progress-text">+50%</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>집단 농장 생활: 공동체 중심 생활 방식</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>혁명 참여: 정치적 충성도 게이지 추가</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>사회주의 교육: 이념 학습 시스템 도입</span>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">삭제된 콘텐츠:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>한국어 교육 -70%: 모국어 교육 기회 대폭 감소</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 70%; background-color: #ff6b6b;"></div>
+                        <div class="progress-text">-70%</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>전통 문화 요소: 봉건적 잔재로 간주되어 제거</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>종교 활동: 모든 종교 콘텐츠 비활성화</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>개인 정체성 표현: 집단주의 가치 우선</span>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">알려진 버그:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>문화 단절: 세대 간 언어 및 문화 전승 장애</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>정체성 혼란 심화: 민족적 뿌리와의 연결 약화</span>
+                    </div>
+                </div>
+            </div>
+            <div class="back-button" onclick="showScreen('version-select-screen')">← 버전 선택으로 돌아가기</div>
+        </div>
+    </div>
+
+    <!-- v4.0 개혁개방 화면 -->
+    <div id="v4-screen" class="screen bg-v4">
+        <div class="container">
+            <div class="patch-note">
+                <h1 class="patch-note-title text-v4">패치 노트 v4.0: 개혁개방</h1>
+                
+                <div class="pixel-visualization" style="background-color: #00264d;">
+                    <div class="modern-city">
+                        <div class="building building-1"></div>
+                        <div class="building building-2"></div>
+                        <div class="building building-3"></div>
+                        <div class="building building-4"></div>
+                        <div class="building building-5"></div>
+                    </div>
+                    <div class="pixel-character" style="left: 100px; bottom: 50px;"></div>
+                    <div class="pixel-character" style="left: 150px; bottom: 50px;"></div>
+                    <div class="pixel-character" style="left: 200px; bottom: 50px;"></div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">새로 추가된 기능:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>경제 발전 참여: 사업 기회 및 소득 증가 +60%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%; background-color: #6bc5ff;"></div>
+                        <div class="progress-text">+60%</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>한중 교류 채널: 한국과의 문화적 교류 재개</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>이중언어 활용: 한중 언어 능력을 활용한 기회</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>'중개자' 역할: 한중 교류의 가교 역할 특성</span>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">삭제된 콘텐츠:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>엄격한 이념 교육: 정치적 통제 완화</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>이동 제한: 도시 이주 및 해외 여행 제한 완화</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>문화적 고립: 외부 문화 유입 차단 정책 축소</span>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">알려진 버그:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>도시 이주 증가: 농촌 공동체 약화 현상</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>세대 간 가치관 충돌: 전통과 현대 사이의 갈등</span>
+                    </div>
+                </div>
+            </div>
+            <div class="back-button" onclick="showScreen('version-select-screen')">← 버전 선택으로 돌아가기</div>
+        </div>
+    </div>
+
+    <!-- v5.0 현대 화면 -->
+    <div id="v5-screen" class="screen bg-v5">
+        <div class="container">
+            <div class="patch-note">
+                <h1 class="patch-note-title text-v5">패치 노트 v5.0: 현대</h1>
+                
+                <div class="pixel-visualization" style="background-color: #1c2630;">
+                    <div class="modern-city">
+                        <div class="building building-1" style="height: 90px;"></div>
+                        <div class="building building-2" style="height: 70px;"></div>
+                        <div class="building building-3" style="height: 100px;"></div>
+                        <div class="building building-4" style="height: 80px;"></div>
+                        <div class="building building-5" style="height: 60px;"></div>
+                    </div>
+                    <div class="digital-device phone-1"></div>
+                    <div class="digital-device phone-2"></div>
+                    <div class="digital-device phone-3"></div>
+                    <div class="digital-device computer"></div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">새로 추가된 기능:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>초국가적 이동성 +200%: 한중일 자유로운 이동</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%; background-color: #c0f7ff;"></div>
+                        <div class="progress-text">+200%</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>디지털 네트워크: 온라인 커뮤니티 및 SNS 활용</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>다중 언어 인터페이스: 한중일+영어 언어 패키지</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>글로벌 정체성: 다양한 문화적 요소 융합</span>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">삭제된 콘텐츠:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>지역 기반 공동체: 전통적 조선족 마을 -60%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%; background-color: #c0f7ff;"></div>
+                        <div class="progress-text">-60%</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>단일 정체성 강제: 다양한 정체성 표현 허용</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">❌</span>
+                        <span>언어 순수성: 혼합 언어 사용 증가</span>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title">알려진 버그:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>인구 감소 위기: 젊은 세대 이주로 인한 공동체 약화</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>'어디에도 속하지 않는' 감각: 정체성 모호성 증가</span>
+                    </div>
+                </div>
+            </div>
+            <div class="back-button" onclick="showScreen('version-select-screen')">← 버전 선택으로 돌아가기</div>
+        </div>
+    </div>
+
+    <!-- 은닉 콘텐츠: 해킹된 버전 -->
+    <div id="secret-screen" class="screen bg-secret">
+        <div class="container">
+            <div class="patch-note">
+                <h1 class="patch-note-title text-secret glitch-text">[해킹된 버전] v?.??: 신조선족</h1>
+                
+                <div class="pixel-visualization" style="background-color: #0a001a;">
+                    <div class="digital-device phone-1" style="border-color: #ff00ff;"></div>
+                    <div class="digital-device phone-2" style="border-color: #00ffff;"></div>
+                    <div class="digital-device phone-3" style="border-color: #ff00ff;"></div>
+                    <div class="digital-device computer" style="border-color: #00ffff;"></div>
+                    <div class="language-icon korean">한</div>
+                    <div class="language-icon chinese">中</div>
+                    <div class="language-icon japanese">日</div>
+                    <div class="language-icon english">En</div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title glitch-text">해킹된 기능:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔄</span>
+                        <span>'코드 스위칭' 마스터: 한중일+영어 자유롭게 전환</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔄</span>
+                        <span>'앱충' 모드: 디지털 도구로 정체성 재구성</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔄</span>
+                        <span>'핵인싸' 스킬: 다중 문화 코드 해독 및 활용</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔄</span>
+                        <span>'왕홍' 직업군: 온라인 영향력 확장</span>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title glitch-text">사용자 생성 콘텐츠:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔧</span>
+                        <span>'조중동' 정체성: 조선족+중국인+동포의 혼합</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔧</span>
+                        <span>'웹툰 구독자': 한류 친화도 +90%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 90%; background-color: #ff00ff;"></div>
+                        <div class="progress-text">+90%</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔧</span>
+                        <span>'국적은 머리에 없다' 마인드셋</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔧</span>
+                        <span>신조어 사전: 한중일 혼합 언어 업데이트</span>
+                    </div>
+                </div>
+                
+                <div class="patch-section">
+                    <h2 class="patch-section-title glitch-text">시스템 메시지:</h2>
+                    <div class="feature-item">
+                        <span class="feature-icon">💬</span>
+                        <span>"이 버전은 공식 지원되지 않습니다"</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">💬</span>
+                        <span>"사용자들이 자체적으로 개발한 생존 전략입니다"</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">💬</span>
+                        <span>"국가의 업데이트와 무관하게 진화 중입니다"</span>
+                    </div>
+                </div>
+            </div>
+            <div class="back-button" onclick="showScreen('version-select-screen')">← 버전 선택으로 돌아가기</div>
+        </div>
+    </div>
+
+    <!-- 설정 화면 -->
+    <div id="settings-screen" class="screen">
+        <div class="container">
+            <h1 class="text-2xl mb-6 text-center">설정</h1>
+            <div class="mb-4">
+                <h2 class="text-xl mb-2">음악 볼륨</h2>
+                <input type="range" min="0" max="100" value="50" class="w-full">
+            </div>
+            <div class="mb-4">
+                <h2 class="text-xl mb-2">효과음 볼륨</h2>
+                <input type="range" min="0" max="100" value="70" class="w-full">
+            </div>
+            <div class="mb-4">
+                <h2 class="text-xl mb-2">텍스트 속도</h2>
+                <input type="range" min="1" max="10" value="5" class="w-full">
+            </div>
+            <div class="mb-4">
+                <h2 class="text-xl mb-2">언어</h2>
+                <select class="w-full p-2 bg-gray-800 text-white">
+                    <option selected>한국어</option>
+                    <option>中文 (중국어)</option>
+                    <option>English (영어)</option>
+                </select>
+            </div>
+            <div class="back-button" onclick="showScreen('main-screen')">← 저장 및 돌아가기</div>
+        </div>
+    </div>
+
+    <!-- 정보 화면 -->
+    <div id="info-screen" class="screen">
+        <div class="container">
+            <h1 class="text-2xl mb-6 text-center">정보</h1>
+            <div class="mb-4">
+                <h2 class="text-xl mb-2">작품 소개</h2>
+                <p class="mb-4">《패치 노트: 민족》은 조선족의 역사와 정체성 변화를 비디오 게임 업데이트 로그(패치 노트) 형식으로 표현한 비디오 아트입니다. 1900년대부터 현재까지 조선족 정체성의 변화를 5개의 주요 "버전"으로 분류하고, 각 시기에 "새로 추가된 기능"과 "삭제된 콘텐츠"를 8비트 그래픽으로 시각화합니다.</p>
+                <p>이 작품은 국가가 '업데이트'한 민족 정체성과 실제 민간의 적응 전략 사이의 간극을 탐구합니다.</p>
+            </div>
+            <div class="mb-4">
+                <h2 class="text-xl mb-2">조작 방법</h2>
+                <p>마우스로 클릭하거나 터치하여 상호작용합니다.</p>
+                <p>특정 패턴으로 버전을 선택하면 숨겨진 콘텐츠를 발견할 수 있습니다.</p>
+            </div>
+            <div class="mb-4">
+                <h2 class="text-xl mb-2">제작자 정보</h2>
+                <p>이 작품은 조선족의 역사와 정체성에 관한 연구를 바탕으로 제작되었습니다.</p>
+            </div>
+            <div class="mb-4">
+                <h2 class="text-xl mb-2">버전</h2>
+                <p>v1.0.0</p>
+            </div>
+            <div class="back-button" onclick="showScreen('main-screen')">← 돌아가기</div>
+        </div>
+    </div>
+
+    <!-- 엔딩 화면 -->
+    <div id="ending-screen" class="screen">
+        <div class="container flex flex-col items-center justify-center h-screen">
+            <h1 class="title">패치 노트: 민족</h1>
+            <p class="text-xl mb-8 text-center">"역사는 패치되지만, 사람들은 항상 자신만의 플레이 방식을 찾아냅니다."</p>
+            <p class="text-lg mb-8 text-center">이 작품은 국가가 '업데이트'한 민족 정체성과 실제 민간의 적응 전략 사이의 간극을 탐구합니다.</p>
+            <div class="pixel-button" onclick="showScreen('main-screen')">처음으로 돌아가기</div>
+        </div>
+    </div>
+
+    <script>
+        // 현재 완료한 버전 수
+        let completedVersions = 0;
+        let secretPattern = [];
+        const correctPattern = ['v1', 'v3', 'v3', 'v7']; // 패턴은 v1→v3→v3→v7
+        
+        // 효과음
+        const sounds = {
+            select: new Audio(),
+            version: new Audio(),
+            feature: new Audio(),
+            remove: new Audio(),
+            secret: new Audio(),
+        };
+        
+        // 화면 전환 함수
+        function showScreen(screenId) {
+            // 현재 활성화된 화면 비활성화
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active-screen');
+            });
+            
+            // 선택한 화면 활성화
+            document.getElementById(screenId).classList.add('active-screen');
+            
+            // 선택 효과음 재생
+            // sounds.select.play();
+            
+            // 모든 버전을 완료했고 엔딩을 보지 않았다면 엔딩 화면으로
+            if (completedVersions >= 5 && screenId === 'main-screen') {
+                document.getElementById('main-screen').classList.remove('active-screen');
+                document.getElementById('ending-screen').classList.add('active-screen');
+                completedVersions = 0; // 리셋
+            }
+        }
+        
+        // 버전 화면 보기
+        function showVersion(version) {
+            // 버전 선택 효과음 재생
+            // sounds.version.play();
+            
+            if (version === 'v7') { // 비밀 버전
+                if (isSecretUnlocked()) {
+                    document.getElementById('version-select-screen').classList.remove('active-screen');
+                    document.getElementById('secret-screen').classList.add('active-screen');
+                    // 비밀 발견 효과음 재생
+                    // sounds.secret.play();
+                }
+            } else {
+                document.getElementById('version-select-screen').classList.remove('active-screen');
+                document.getElementById(version + '-screen').classList.add('active-screen');
+                
+                // 이 버전을 처음 방문한다면 완료 카운트 증가
+                if (!localStorage.getItem('visited_' + version)) {
+                    localStorage.setItem('visited_' + version, 'true');
+                    completedVersions++;
+                    
+                    // 모든 버전을 방문했다면 비밀 버전 잠금 해제
+                    if (completedVersions >= 5) {
+                        unlockSecret();
+                    }
+                }
+                
+                // 비밀 패턴 추적
+                secretPattern.push(version);
+                if (secretPattern.length > 4) {
+                    secretPattern.shift(); // 가장 오래된 항목 제거
+                }
+                
+                // 패턴이 맞는지 확인
+                checkSecretPattern();
+            }
+        }
+        
+        // 비밀 패턴 확인
+        function checkSecretPattern() {
+            if (secretPattern.length === 4) {
+                let patternMatches = true;
+                for (let i = 0; i < 4; i++) {
+                    if (secretPattern[i] !== correctPattern[i]) {
+                        patternMatches = false;
+                        break;
+                    }
+                }
+                
+                if (patternMatches) {
+                    unlockSecret();
+                }
+            }
+        }
+        
+        // 비밀 버전 잠금 해제
+        function unlockSecret() {
+            const secretVersion = document.getElementById('secret-version');
+            secretVersion.classList.remove('locked');
+            secretVersion.classList.add('bg-secret');
+            secretVersion.textContent = '> [해킹된 버전] v?.??: 신조선족';
+            secretVersion.onclick = function() { showVersion('v7'); };
+            localStorage.setItem('secret_unlocked', 'true');
+        }
+        
+        // 비밀 버전이 잠금 해제되었는지 확인
+        function isSecretUnlocked() {
+            return localStorage.getItem('secret_unlocked') === 'true';
+        }
+        
+        // 페이지 로드 시 초기화
+        window.onload = function() {
+            // 방문한 버전 수 계산
+            const visitedVersions = ['v1', 'v2', 'v3', 'v4', 'v5'].filter(v => 
+                localStorage.getItem('visited_' + v) === 'true'
+            );
+            completedVersions = visitedVersions.length;
+            
+            // 비밀 버전 상태 확인
+            if (isSecretUnlocked()) {
+                unlockSecret();
+            }
+            
+            // 프로그레스 바 애니메이션
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 300);
+            });
+        };
+    </script>
+</body>
+</html>
